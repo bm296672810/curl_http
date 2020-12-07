@@ -13,15 +13,10 @@
     cmake, git, openssl(curl的依赖项)
 
 1.  安装curl
-
-    $ git clone https://gitee.com/ellan-bm/curl.git
-
-    $ cd curl
-
-    $ cmake -Bbuild -H. -DOPENSSL_ROOT_DIR=/usr/local/openssl/ -DOPENSSL_LIBRARIES=/usr/local/openssl/lib
-
-    $ sudo cmake cmake --build build/ --target install
-
+    1. $ git clone https://gitee.com/ellan-bm/curl.git
+    2. $ cd curl
+    3. $ cmake -Bbuild -H. -DOPENSSL_ROOT_DIR=/usr/local/openssl/ -DOPENSSL_LIBRARIES=/usr/local/openssl/lib
+    4. $ sudo cmake cmake --build build/ --target install
     第三步我指定了openssl的根目录和库目录是因为我本地的openssl没有安装到/usr/local/lib 目录下，如果安装openssl时使用的是默认路径可以不用指定这两项
 
 

@@ -1,25 +1,25 @@
 # curl_http
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+基于curl库封装的一个http请求类
 
 #### 软件架构
 软件架构说明
 
 
 #### 安装教程
+0. 依赖以下工具:
+    cmake, git, openssl(curl的依赖项)
+1.  安装curl
+    $ git clone https://gitee.com/ellan-bm/curl.git
+    $ cd curl
+    $ cmake -Bbuild -H. -DOPENSSL_ROOT_DIR=/usr/local/openssl/ -DOPENSSL_LIBRARIES=/usr/local/openssl/lib
+    $ sudo cmake cmake --build build/ --target install
+第三步我指定了openssl的根目录和库目录是因为我本地的openssl没有安装到/usr/local/lib 目录下，如果安装openssl时使用的是默认路径可以不用指定这两项
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 #### 使用说明
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
 
 #### 参与贡献
 

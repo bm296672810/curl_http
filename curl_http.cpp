@@ -16,16 +16,58 @@ curl_http::curl_http()
 {
     m_curl = curl_easy_init();
 }
-std::string curl_http::request(const std::string& url)
+
+std::string curl_http::get(const std::string& url, const http_header& head)
 {
+    return request(url, head);
+}
+std::string curl_http::post(const std::string& url, const std::string& data, const http_header& head)
+{
+    return request(url, head, RT_POST, data);
+}
+std::string curl_http::del(const std::string& url, const http_header& head)
+{
+    return request(url, head, RT_DELETE);
+}
+curl_http::~curl_http()
+{
+    curl_easy_cleanup(m_curl);
+}
+
+std::string curl_http::request(const std::string& url, const http_header& h, request_type t, const std::string& data)
+{
+    std::lock_guard<std::mutex> lock(m_lock);
+    
     std::string respone;
     struct curl_slist *headers = nullptr;
     
-    // curl_easy_setopt(m_curl, CURLOPT_CUSTOMREQUEST, "POST");
-
-    headers = curl_slist_append(headers, "accept: application/json");
+    if(!h.accept.empty())
+        headers = curl_slist_append(headers, (h.accept_key + ":"+ h.accept).c_str());
+    if(!h.content_type.empty())
+        headers = curl_slist_append(headers, (h.content_type_key + ":" + h.content_type).c_str());
+    if(!h.token.empty())
+        headers = curl_slist_append(headers, (h.token_key + ":" + h.token).c_str());
+        
     curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
+
     curl_easy_setopt(m_curl, CURLOPT_HTTPHEADER, headers);
+    switch (t)
+    {
+    case RT_GET:
+        break;
+    case RT_POST:
+    {
+        curl_easy_setopt(m_curl, CURLOPT_POSTFIELDSIZE, data.length());
+        curl_easy_setopt(m_curl, CURLOPT_POSTFIELDS, data.c_str());
+        curl_easy_setopt(m_curl, CURLOPT_POST, 1);
+    }
+        break;
+    case RT_DELETE:
+        curl_easy_setopt(m_curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+        break;
+    default:
+        break;
+    }
 
     curl_easy_setopt(m_curl, CURLOPT_READFUNCTION, NULL);
     curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, OnWriteData);
@@ -48,8 +90,4 @@ std::string curl_http::request(const std::string& url)
     }
 
     return respone;
-}
-curl_http::~curl_http()
-{
-    curl_easy_cleanup(m_curl);
 }

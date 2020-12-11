@@ -16,6 +16,9 @@ public:
     std::string content_type;
     std::string token;
     std::string token_key;
+
+    std::string time_stamp;
+    std::string time_stamp_key;
 };
 
 enum request_type

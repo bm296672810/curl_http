@@ -47,6 +47,10 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
         headers = curl_slist_append(headers, (h.content_type_key + ":" + h.content_type).c_str());
     if(!h.token.empty())
         headers = curl_slist_append(headers, (h.token_key + ":" + h.token).c_str());
+    if(!h.sign.empty())
+        headers = curl_slist_append(headers, (h.sign_key + ":" + h.sign).c_str());
+    if(!h.time_stamp.empty())
+        headers = curl_slist_append(headers, (h.time_stamp_key + ":" + h.time_stamp).c_str());
 
     curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
 

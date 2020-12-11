@@ -16,7 +16,8 @@ public:
     std::string content_type;
     std::string token;
     std::string token_key;
-
+    std::string sign;
+    std::string sign_key;
     std::string time_stamp;
     std::string time_stamp_key;
 };

@@ -7,6 +7,7 @@
 
 #define CURL_CONNECT_TIMEOUT 2
 #define CURL_OPT_TIMEOUT 5
+
 class http_header
 {
 public:
@@ -28,7 +29,7 @@ enum request_type
     RT_POST,
     RT_DELETE,
 };
-namespace yf
+namespace bm
 {
 namespace http
 {

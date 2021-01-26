@@ -3,7 +3,7 @@
 
 int main(int argc, char* argv[])
 {
-    yf::http::init_curl();
+    bm::http::init_curl();
 
     std::string token = "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJsb3JhLWFwcC1zZXJ2ZXIiLCJleHAiOjE2MDc0OTk2NTksImV4cGlyYXRpb25EYXRlIjoiMjAzMC0xMi0wMiIsImlzcyI6ImxvcmEtYXBwLXNlcnZlciIsIm5iZiI6MTYwNzQxMzI1OSwic3ViIjoidXNlciIsInVzZXJuYW1lIjoiMTM5MjM4NDk5ODAifQ.3iVqzBKGkvp4GKItbYJtNpaW9pvleJOXAbVKN8SuZTM";
     curl_http ch;

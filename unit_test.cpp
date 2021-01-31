@@ -36,6 +36,6 @@ int main(int argc, char* argv[])
     req = ch.del(delete_url, delete_head);
     std::cout << "delete:" << req << std::endl;
 
-    yf::http::release_curl();
+    bm::http::release_curl();
     return 0;
 }

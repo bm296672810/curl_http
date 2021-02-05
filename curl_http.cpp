@@ -1,4 +1,6 @@
 #include "curl_http.h"
+#include <iostream>
+#include <fstream>
 
 static size_t OnWriteData(void* buffer, size_t size, size_t nmemb, void *lpVoid)
 {
@@ -11,7 +13,15 @@ static size_t OnWriteData(void* buffer, size_t size, size_t nmemb, void *lpVoid)
     str->append(pData, size * nmemb);
     return nmemb;
 }
-
+static int curl_debug(CURL* handle, curl_infotype type, char* data,
+                          size_t size, void* userptr)
+{
+    // std::cout << "curl log:" << std::string(data, size) << std::endl;
+    std::fstream f("test.log", std::ios::app | std::ios::in);
+    f << (char*)userptr << "==========================================================" << std::endl;
+    f << std::string(data, size) << std::endl;
+    return size;
+}
 curl_http::curl_http()
 {
     m_curl = curl_easy_init();
@@ -76,6 +86,9 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
     curl_easy_setopt(m_curl, CURLOPT_READFUNCTION, NULL);
     curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, OnWriteData);
     curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, (void *)&respone);
+    curl_easy_setopt(m_curl, CURLOPT_VERBOSE, 1);
+    curl_easy_setopt(m_curl, CURLOPT_DEBUGFUNCTION, curl_debug);
+    curl_easy_setopt(m_curl, CURLOPT_DEBUGDATA, data.data());
 
     /**
     * 当多个线程都使用超时处理的时候，同时主线程中有 sleep 或是 wait 等操作。
@@ -84,9 +97,9 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
     curl_easy_setopt(m_curl, CURLOPT_NOSIGNAL, 1);
     curl_easy_setopt(m_curl, CURLOPT_CONNECTTIMEOUT, CURL_CONNECT_TIMEOUT);
     curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, CURL_OPT_TIMEOUT);
-
+    // CURLcode::CURL_LAST
     auto r = curl_easy_perform(m_curl);
-
+    std::cout << "url:" << url << ",code:" << r << std::endl;
     curl_slist_free_all (headers);
     if(r != CURLE_OK)
     {

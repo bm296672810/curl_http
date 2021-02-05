@@ -5,8 +5,8 @@
 
 #include <curl/curl.h>
 
-#define CURL_CONNECT_TIMEOUT 2
-#define CURL_OPT_TIMEOUT 5
+#define CURL_CONNECT_TIMEOUT 5
+#define CURL_OPT_TIMEOUT 10
 
 class http_header
 {

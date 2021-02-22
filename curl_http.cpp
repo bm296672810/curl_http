@@ -86,9 +86,9 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
     curl_easy_setopt(m_curl, CURLOPT_READFUNCTION, NULL);
     curl_easy_setopt(m_curl, CURLOPT_WRITEFUNCTION, OnWriteData);
     curl_easy_setopt(m_curl, CURLOPT_WRITEDATA, (void *)&respone);
-    curl_easy_setopt(m_curl, CURLOPT_VERBOSE, 1);
-    curl_easy_setopt(m_curl, CURLOPT_DEBUGFUNCTION, curl_debug);
-    curl_easy_setopt(m_curl, CURLOPT_DEBUGDATA, data.data());
+    // curl_easy_setopt(m_curl, CURLOPT_VERBOSE, 1);
+    // curl_easy_setopt(m_curl, CURLOPT_DEBUGFUNCTION, curl_debug);
+    // curl_easy_setopt(m_curl, CURLOPT_DEBUGDATA, data.data());
 
     /**
     * 当多个线程都使用超时处理的时候，同时主线程中有 sleep 或是 wait 等操作。
@@ -99,7 +99,7 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
     curl_easy_setopt(m_curl, CURLOPT_TIMEOUT, CURL_OPT_TIMEOUT);
     // CURLcode::CURL_LAST
     auto r = curl_easy_perform(m_curl);
-    std::cout << "url:" << url << ",code:" << r << std::endl;
+    // std::cout << "url:" << url << ",code:" << r << std::endl;
     curl_slist_free_all (headers);
     if(r != CURLE_OK)
     {

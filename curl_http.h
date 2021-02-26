@@ -58,7 +58,7 @@ public:
 private:
     std::string request(const std::string& url, const http_header& h, request_type t = RT_GET, const std::string& data = "");
 private:
-    CURL* m_curl = nullptr;
+    // CURL* m_curl = nullptr;
 
     std::mutex m_lock;
 };

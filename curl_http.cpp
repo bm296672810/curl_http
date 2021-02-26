@@ -16,7 +16,7 @@ static size_t OnWriteData(void* buffer, size_t size, size_t nmemb, void *lpVoid)
 static int curl_debug(CURL* handle, curl_infotype type, char* data,
                           size_t size, void* userptr)
 {
-    // std::cout << "curl log:" << std::string(data, size) << std::endl;
+    std::cout << "curl log:" << std::string(data, size) << std::endl;
     std::fstream f("test.log", std::ios::app | std::ios::in);
     f << (char*)userptr << "==========================================================" << std::endl;
     f << std::string(data, size) << std::endl;
@@ -24,7 +24,7 @@ static int curl_debug(CURL* handle, curl_infotype type, char* data,
 }
 curl_http::curl_http()
 {
-    m_curl = curl_easy_init();
+    // m_curl = curl_easy_init();
 }
 
 std::string curl_http::get(const std::string& url, const http_header& head)
@@ -41,7 +41,7 @@ std::string curl_http::del(const std::string& url, const http_header& head)
 }
 curl_http::~curl_http()
 {
-    curl_easy_cleanup(m_curl);
+    // curl_easy_cleanup(m_curl);
 }
 
 std::string curl_http::request(const std::string& url, const http_header& h, request_type t, const std::string& data)
@@ -61,6 +61,10 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
         headers = curl_slist_append(headers, (h.sign_key + ":" + h.sign).c_str());
     if(!h.time_stamp.empty())
         headers = curl_slist_append(headers, (h.time_stamp_key + ":" + h.time_stamp).c_str());
+
+    CURL* m_curl = curl_easy_init();
+    if(!m_curl)
+        return "curl_easy_init error!";
 
     curl_easy_setopt(m_curl, CURLOPT_URL, url.c_str());
 
@@ -101,6 +105,8 @@ std::string curl_http::request(const std::string& url, const http_header& h, req
     auto r = curl_easy_perform(m_curl);
     // std::cout << "url:" << url << ",code:" << r << std::endl;
     curl_slist_free_all (headers);
+    curl_easy_cleanup(m_curl);
+    
     if(r != CURLE_OK)
     {
         return "";
